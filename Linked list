@@ -1,0 +1,121 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+class List
+{
+private:
+	typedef struct node
+	{
+		string data1;
+		int data2;
+		node* next;
+	}*nodePtr;
+	nodePtr head;
+	nodePtr current;
+	nodePtr temp;
+public:
+	List();
+	void AddNode(string addData1,int addData2);
+	void DeleteNode(string delData1);
+	void printList();
+	void searchRecursive(string searchValue);
+};
+
+List::List()
+{
+	head = NULL;
+	current = NULL;
+	temp = NULL;
+}
+
+void List::AddNode(string addData1, int addData2)
+{
+	nodePtr n = new node;
+	n->next = NULL;
+	n->data1 = addData1;
+	n->data2 = addData2;
+	if (head != NULL)
+	{
+		current = head;
+		while (current->next != NULL)
+		{
+			current = current->next;
+		}
+			current->next = n;
+		
+	}
+	else
+		head = n;
+}
+
+void List::DeleteNode(string delData1)
+{
+	nodePtr delPtr = NULL;
+	temp = head;
+	current = head;
+	while (current != NULL && current->data1 != delData1)
+	{
+		temp = current;
+		current = current->next;
+	}
+	if (current == NULL)
+	{
+		cout << delData1  << " was not in the list" << endl;
+		delete delPtr;
+	}
+	else
+	{
+		delPtr = current;
+		current = current->next;
+		temp->next = current;
+		if (delPtr == head)
+		{
+			head = head->next;
+			temp = NULL;
+		}
+		delete delPtr;
+		cout << "The value " << delData1 << " was deleted" << endl;
+	}
+
+}
+void List::printList()
+{
+	current = head;
+	while (current != NULL)
+	{
+		cout << current->data1 << ", " << current->data2 << endl;
+		current = current->next;
+	}
+}
+void List::searchRecursive(string searchValue)
+{
+	node* Ptr = head;
+	if (Ptr == NULL)
+	{
+		cout << searchValue << " was not found in the list" << endl;
+	}
+	else if (Ptr->data1 == searchValue)
+	{
+		cout << searchValue << " value is in the list. The value is: " << Ptr->data2 << endl;
+	}
+	else
+	{
+		Ptr->next;
+		searchRecursive(searchValue);
+		
+	}
+}
+
+int main()
+{
+	List Paul;
+	Paul.AddNode("Lisa", 86);
+	Paul.AddNode("Jackie", 89);
+	Paul.AddNode("Kelly",43);
+	Paul.AddNode("Hewgh", 36);
+	Paul.AddNode("Delta, A", 79);
+	Paul.printList();
+	Paul.DeleteNode("Kelly");
+	Paul.printList();
+	Paul.searchRecursive("Lisa");
+}
